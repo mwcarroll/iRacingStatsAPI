@@ -30,7 +30,7 @@ namespace iRacingStatsAPI.Controllers
             return await YearlyStats(id, year, null);
         }
 
-        [HttpGet("YearlyStats/{id:int}/{year:int:maxlength(4)}/{category:alpha}")]
+        [HttpGet("YearlyStats/{id:int}/{year:int:maxlength(4)}/{category:regex(^(dirt )?((road)|(oval))$)}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, int? year, string category)
         {
             Client c = new();
