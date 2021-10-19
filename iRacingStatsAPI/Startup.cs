@@ -1,4 +1,5 @@
 using iRacingStatsAPI.HttpClients;
+using iRacingStatsAPI.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ namespace iRacingStatsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<User>(Configuration.GetSection("iRacingStatsAPI:User"));
             services.AddHttpClient<IRacingHttpClient>();
             services.AddMemoryCache();
             services.AddControllers();
