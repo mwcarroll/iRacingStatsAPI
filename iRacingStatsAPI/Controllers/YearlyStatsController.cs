@@ -1,4 +1,5 @@
 ﻿using EnumsNET;
+using iRacingStatsAPI.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,39 +9,44 @@ using System.Web;
 
 namespace iRacingStatsAPI.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     public class YearlyStatsController : ControllerBase
     {
-        [HttpGet("YearlyStats/{id:int}")]
+        private readonly IRacingHttpClient _iracingHttpClient;
+
+        public YearlyStatsController(IRacingHttpClient iracingHttpClient)
+        {
+            _iracingHttpClient = iracingHttpClient;
+        }
+
+        [HttpGet("{id:int}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id)
         {
             return await YearlyStats(id, null, null);
         }
 
-        [HttpGet("YearlyStats/{id:int}/{category:alpha}")]
+        [HttpGet("{id:int}/{category:alpha}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, string category)
         {
             return await YearlyStats(id, null, category);
         }
 
-        [HttpGet("YearlyStats/{id:int}/{year:int:maxlength(4)}")]
+        [HttpGet("{id:int}/{year:int:maxlength(4)}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, int? year = null)
         {
             return await YearlyStats(id, year, null);
         }
 
-        [HttpGet("YearlyStats/{id:int}/{year:int:maxlength(4)}/{category:regex(^(dirt )?((road)|(oval))$)}")]
+        [HttpGet("{id:int}/{year:int:maxlength(4)}/{category:regex(^(dirt )?((road)|(oval))$)}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, int? year, string category)
         {
-            Client c = new();
-
             Dictionary<string, string> data = new()
             {
                 { "custid", id.ToString() }
             };
 
-            IEnumerable<Models.YearlyStats> yearlyStats = await c.PostRequestAndGetResponses<Models.YearlyStats>(string.Format(Constants.URLs.YEARLY_STATS, id), data);
+            IEnumerable<Models.YearlyStats> yearlyStats = await _iracingHttpClient.PostRequestAndGetResponses<Models.YearlyStats>(string.Format(Constants.URLs.YEARLY_STATS, id), data);
 
             if (year != null) yearlyStats = yearlyStats.Where(x => x.year.Equals(year.ToString()));
             if (category != null) yearlyStats = yearlyStats.Where(x => x.category.AsString(EnumFormat.Description).Equals(HttpUtility.UrlDecode(category), StringComparison.InvariantCultureIgnoreCase));

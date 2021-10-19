@@ -1,24 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iRacingStatsAPI.HttpClients;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace iRacingStatsAPI.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CareerStatsController : ControllerBase
     {
-        [HttpGet("CareerStats/{id:int}")]
+        private readonly IRacingHttpClient _iracingHttpClient;
+
+        public CareerStatsController(IRacingHttpClient iracingHttpClient)
+        {
+            _iracingHttpClient = iracingHttpClient;
+        }
+
+        [HttpGet("{id:int}")]
         public async Task<IEnumerable<Models.CareerStats>> CareerStats(int id)
         {
-            Client c = new();
-
             Dictionary<string, string> data = new()
             {
                 { "custid", id.ToString() }
             };
 
-            return await c.PostRequestAndGetResponses<Models.CareerStats>(string.Format(Constants.URLs.CAREER_STATS, id), data);
+            return await _iracingHttpClient.PostRequestAndGetResponses<Models.CareerStats>(string.Format(Constants.URLs.CAREER_STATS, id), data);
         }
     }
 }
