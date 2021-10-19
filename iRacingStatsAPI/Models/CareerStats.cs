@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace iRacingStatsAPI.Models
+﻿namespace iRacingStatsAPI.Models
 {
     public class CareerStats
     {

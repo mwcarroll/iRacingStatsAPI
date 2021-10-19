@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using iRacingStatsAPI.Options;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace iRacingStatsAPI.HttpClients
@@ -14,16 +16,20 @@ namespace iRacingStatsAPI.HttpClients
         private readonly ILogger<IRacingHttpClient> _logger;
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _memoryCache;
+        private readonly User _user;
 
         public IRacingHttpClient(
             ILogger<IRacingHttpClient> logger,
             HttpClient httpClient,
-            IMemoryCache memoryCache
+            IMemoryCache memoryCache,
+            IOptions<User> options
             )
         {
             _logger = logger;
             _httpClient = httpClient;
             _memoryCache = memoryCache;
+            _user = options.Value;
+
         }
 
 
@@ -55,7 +61,6 @@ namespace iRacingStatsAPI.HttpClients
                 isLoggedIn = loggedIn;
             }
 
-
             // avoid (hopefully) being rate limited
             if (lastPostDateTime.AddMilliseconds(Constants.Config.POST_DELAY) < DateTime.UtcNow)
             {
@@ -64,10 +69,7 @@ namespace iRacingStatsAPI.HttpClients
 
             if (!isLoggedIn)
             {
-                HttpResponseMessage loginResponse = await this.Login(
-                    Environment.GetEnvironmentVariable("iR_username", EnvironmentVariableTarget.User),
-                    Environment.GetEnvironmentVariable("iR_password", EnvironmentVariableTarget.User)
-                );
+                HttpResponseMessage loginResponse = await Login(_user.Username, _user.Password);
 
                 if (loginResponse.RequestMessage.RequestUri.AbsolutePath.Contains("failedlogin"))
                 {
@@ -92,9 +94,11 @@ namespace iRacingStatsAPI.HttpClients
 
         public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, string> formData)
         {
-            HttpResponseMessage response = await this.PostRequest(url, formData);
+            HttpResponseMessage response = await PostRequest(url, formData);
             string jsonString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);
+
+            var serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString);
+            return serialized;
         }
     }
 }
