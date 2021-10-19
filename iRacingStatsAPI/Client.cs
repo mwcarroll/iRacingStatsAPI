@@ -65,5 +65,13 @@ namespace iRacingStatsAPI
 
             return response;
         }
+
+        public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, string> formData)
+        {
+            HttpResponseMessage response = await this.PostRequest(url, formData);
+            string jsonString = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);
+        }
     }
 }
