@@ -19,9 +19,9 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<IEnumerable<Models.CareerStats>> CareerStats(int id)
         {
-            Dictionary<string, string> data = new()
+            Dictionary<string, object> data = new()
             {
-                { "custid", id.ToString() }
+                { "custid", id }
             };
 
             return await _iracingHttpClient.PostRequestAndGetResponses<Models.CareerStats>(string.Format(Constants.URLs.CAREER_STATS, id), data);

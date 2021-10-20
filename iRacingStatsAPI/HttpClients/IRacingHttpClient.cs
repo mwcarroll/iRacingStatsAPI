@@ -44,7 +44,7 @@ namespace iRacingStatsAPI.HttpClients
             return await _httpClient.PostAsync(Constants.URLs.LOGIN2, content);
         }
 
-        public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, string> formData)
+        public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, object> formData)
         {
             var lastPostDateTime = DateTime.MinValue;
             if (_memoryCache.TryGetValue("IRacingHttpClient::LastPostDateTime", out DateTime last))
@@ -81,7 +81,7 @@ namespace iRacingStatsAPI.HttpClients
                 System.Threading.Thread.Sleep(Constants.Config.POST_DELAY);
             }
 
-            FormUrlEncodedContent content = new(formData);
+            StringContent content = (formData != null) ? new(JsonSerializer.Serialize(formData)) : null;
             HttpResponseMessage response = await _httpClient.PostAsync(url, content);
 
             _memoryCache.Set("IRacingHttpClient::LastPostDateTime", DateTime.UtcNow);
@@ -89,7 +89,7 @@ namespace iRacingStatsAPI.HttpClients
             return response;
         }
 
-        public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, string> formData)
+        public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, object> formData)
         {
             HttpResponseMessage response = await PostRequest(url, formData);
             string jsonString = await response.Content.ReadAsStringAsync();
@@ -97,7 +97,7 @@ namespace iRacingStatsAPI.HttpClients
             IEnumerable<T> serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString);
             return serialized;
         }
-        public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, string> formData)
+        public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, object> formData)
         {
             HttpResponseMessage response = await PostRequest(url, formData);
             string jsonString = await response.Content.ReadAsStringAsync();
@@ -106,7 +106,7 @@ namespace iRacingStatsAPI.HttpClients
             return serialized;
         }
 
-        public async Task<string> PostRequestAndGetResponse(string url, Dictionary<string, string> formData)
+        public async Task<string> PostRequestAndGetResponse(string url, Dictionary<string, object> formData)
         {
             HttpResponseMessage response = await PostRequest(url, formData);
             string jsonString = await response.Content.ReadAsStringAsync();

@@ -41,9 +41,9 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{id:int}/{year:int:maxlength(4)}/{category:regex(^(dirt )?((road)|(oval))$)}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, int? year, string category)
         {
-            Dictionary<string, string> data = new()
+            Dictionary<string, object> data = new()
             {
-                { "custid", id.ToString() }
+                { "custid", id }
             };
 
             IEnumerable<Models.YearlyStats> yearlyStats = await _iracingHttpClient.PostRequestAndGetResponses<Models.YearlyStats>(string.Format(Constants.URLs.YEARLY_STATS, id), data);
