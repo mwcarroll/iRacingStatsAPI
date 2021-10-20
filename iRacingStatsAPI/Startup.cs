@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Net.Http;
 
 namespace iRacingStatsAPI
 {
@@ -22,7 +23,14 @@ namespace iRacingStatsAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<User>(Configuration.GetSection("iRacingStatsAPI:User"));
-            services.AddHttpClient<IRacingHttpClient>();
+            services.AddHttpClient<IRacingHttpClient>()
+                .ConfigureHttpMessageHandlerBuilder((c) =>
+                    new HttpClientHandler()
+                    {
+                        CookieContainer = new(),
+                        UseCookies = true
+                    }
+                );
             services.AddMemoryCache();
             services.AddControllers();
             services.AddSwaggerGen(c =>
