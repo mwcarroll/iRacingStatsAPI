@@ -4,10 +4,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace iRacingStatsAPI.HttpClients
 {
@@ -43,15 +45,21 @@ namespace iRacingStatsAPI.HttpClients
 		public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, object> formData)
 		{
 			var lastPostDateTime = DateTime.MinValue;
-			if (_memoryCache.TryGetValue("IRacingHttpClient::LastPostDateTime", out DateTime last))
+			if (_memoryCache.TryGetValue("IRacingHttpClient::LastPostDateTime", out DateTime cache_last))
 			{
-				lastPostDateTime = last;
+				lastPostDateTime = cache_last;
 			}
 
 			var isLoggedIn = false;
-			if (_memoryCache.TryGetValue("IRacingHttpClient::IsLoggedIn", out bool loggedIn))
+			if (_memoryCache.TryGetValue("IRacingHttpClient::IsLoggedIn", out bool cache_isLoggedIn))
 			{
-				isLoggedIn = loggedIn;
+				isLoggedIn = cache_isLoggedIn;
+			}
+
+            IEnumerable<string> cookies = new List<string>();
+			if (_memoryCache.TryGetValue("IRacingHttpClient::Cookies", out IEnumerable<string> cached_cookies))
+			{
+				cookies = cached_cookies;
 			}
 
 			// avoid (hopefully) being rate limited
@@ -67,20 +75,27 @@ namespace iRacingStatsAPI.HttpClients
 				if (loginResponse.RequestMessage.RequestUri.AbsolutePath.Contains("failedlogin"))
 				{
 					_memoryCache.Set("IRacingHttpClient::IsLoggedIn", false);
+					_memoryCache.Set("IRacingHttpClient::Cookies", GetCookies(loginResponse));
+
 					throw new HttpRequestException("Login request redirected to /failedlogin, indicationg an authentication error. If credentials are correct, check that a captcha is not required by manually visiting members.iracing.com");
 				}
 				else
 				{
 					_memoryCache.Set("IRacingHttpClient::IsLoggedIn", true);
+					_memoryCache.Set("IRacingHttpClient::Cookies", GetCookies(loginResponse));
 				}
 
 				System.Threading.Thread.Sleep(Constants.Config.POST_DELAY);
 			}
 
 			StringContent content = (formData != null) ? new(JsonSerializer.Serialize(formData)) : null;
-			HttpResponseMessage response = await _httpClient.PostAsync(url, content);
 
-			// TODO: fix this... cookie isn't being applied correctly and the login is timing out too quickly
+			HttpRequestMessage request = new(HttpMethod.Post, url);
+			request.Headers.Add("Cookie", cookies);
+			request.Content = content;
+
+			HttpResponseMessage response = await _httpClient.SendAsync(request);
+
 			if (response.RequestMessage.RequestUri.AbsolutePath.Contains("login")){
 				_memoryCache.Set("IRacingHttpClient::IsLoggedIn", false);
 
@@ -115,5 +130,12 @@ namespace iRacingStatsAPI.HttpClients
 			string jsonString = await response.Content.ReadAsStringAsync();
 			return jsonString;
 		}
+
+		public IEnumerable<string> GetCookies(HttpResponseMessage message)
+        {
+			message.Headers.TryGetValues("Set-Cookie", out var cookies);
+
+			return cookies;
+        }
 	}
 }

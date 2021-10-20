@@ -27,8 +27,7 @@ namespace iRacingStatsAPI
                 .ConfigureHttpMessageHandlerBuilder((c) =>
                     new HttpClientHandler()
                     {
-                        CookieContainer = new(),
-                        UseCookies = true
+                        UseCookies = false
                     }
                 );
             services.AddMemoryCache();
