@@ -1,6 +1,4 @@
-﻿
-
-namespace iRacingStatsAPI.Models
+﻿namespace iRacingStatsAPI.Models
 {
     public class YearlyStats
     {

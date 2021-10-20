@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,9 +28,7 @@ namespace iRacingStatsAPI.HttpClients
             _httpClient = httpClient;
             _memoryCache = memoryCache;
             _user = options.Value;
-
         }
-
 
         public async Task<HttpResponseMessage> Login(string username, string password)
         {
@@ -97,8 +94,23 @@ namespace iRacingStatsAPI.HttpClients
             HttpResponseMessage response = await PostRequest(url, formData);
             string jsonString = await response.Content.ReadAsStringAsync();
 
-            var serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString);
+            IEnumerable<T> serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString);
             return serialized;
+        }
+        public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, string> formData)
+        {
+            HttpResponseMessage response = await PostRequest(url, formData);
+            string jsonString = await response.Content.ReadAsStringAsync();
+
+            Type serialized = JsonSerializer.Deserialize<Type>(jsonString);
+            return serialized;
+        }
+
+        public async Task<string> PostRequestAndGetResponse(string url, Dictionary<string, string> formData)
+        {
+            HttpResponseMessage response = await PostRequest(url, formData);
+            string jsonString = await response.Content.ReadAsStringAsync();
+            return jsonString;
         }
     }
 }
