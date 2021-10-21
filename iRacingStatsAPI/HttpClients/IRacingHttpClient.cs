@@ -4,12 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace iRacingStatsAPI.HttpClients
 {
@@ -19,6 +16,11 @@ namespace iRacingStatsAPI.HttpClients
 		private readonly HttpClient _httpClient;
 		private readonly IMemoryCache _memoryCache;
 		private readonly User _user;
+		private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+		{
+			PropertyNameCaseInsensitive = true,
+			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+		};
 
 		public IRacingHttpClient(ILogger<IRacingHttpClient> logger, HttpClient httpClient, IMemoryCache memoryCache, IOptions<User> options)
 		{
@@ -96,7 +98,8 @@ namespace iRacingStatsAPI.HttpClients
 
 			HttpResponseMessage response = await _httpClient.SendAsync(request);
 
-			if (response.RequestMessage.RequestUri.AbsolutePath.Contains("login")){
+			if (response.RequestMessage.RequestUri.AbsolutePath.Contains("login"))
+			{
 				_memoryCache.Set("IRacingHttpClient::IsLoggedIn", false);
 
 				return await PostRequest(url, formData);
@@ -112,15 +115,16 @@ namespace iRacingStatsAPI.HttpClients
 			HttpResponseMessage response = await PostRequest(url, formData);
 			string jsonString = await response.Content.ReadAsStringAsync();
 
-			IEnumerable<T> serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString);
+			IEnumerable<T> serialized = JsonSerializer.Deserialize<IEnumerable<T>>(jsonString, _jsonOptions);
 			return serialized;
 		}
+
 		public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, object> formData)
 		{
 			HttpResponseMessage response = await PostRequest(url, formData);
 			string jsonString = await response.Content.ReadAsStringAsync();
 
-			Type serialized = JsonSerializer.Deserialize<Type>(jsonString);
+			Type serialized = JsonSerializer.Deserialize<Type>(jsonString, _jsonOptions);
 			return serialized;
 		}
 

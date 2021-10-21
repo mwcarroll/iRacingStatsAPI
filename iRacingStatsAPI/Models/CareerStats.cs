@@ -2,20 +2,20 @@
 {
     public class CareerStats
     {
-        public int wins { get; set; }
-        public int totalclubpoints { get; set; }
-        public double winPerc { get; set; }
-        public int poles { get; set; }
-        public int avgStart { get; set; }
-        public int avgFinish { get; set; }
-        public double top5Perc { get; set; }
-        public int totalLaps { get; set; }
-        public double avgIncPerRace { get; set; }
-        public int avgPtsPerRace { get; set; }
-        public int lapsLed { get; set; }
-        public int top5 { get; set; }
-        public double lapsLedPerc { get; set; }
-        public Enums.RaceCategory category { get; set; }
-        public int starts { get; set; }
+        public int Wins { get; set; }
+        public int TotalClubPoints { get; set; }
+        public double WinPerc { get; set; }
+        public int Poles { get; set; }
+        public int AvgStart { get; set; }
+        public int AvgFinish { get; set; }
+        public double Top5Perc { get; set; }
+        public int TotalLaps { get; set; }
+        public double AvgIncPerRace { get; set; }
+        public int AvgPtsPerRace { get; set; }
+        public int LapsLed { get; set; }
+        public int Top5 { get; set; }
+        public double LapsLedPerc { get; set; }
+        public Enums.RaceCategory Category { get; set; }
+        public int Starts { get; set; }
     }
 }

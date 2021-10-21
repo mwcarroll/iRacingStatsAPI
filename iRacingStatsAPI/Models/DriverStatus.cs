@@ -12,40 +12,40 @@ namespace iRacingStatsAPI.Models
 
     public class Helmet
     {
-        public string c3 { get; set; }
-        public int ll { get; set; }
-        public int hp { get; set; }
-        public int ht { get; set; }
-        public string c1 { get; set; }
-        public int ft { get; set; }
-        public string c2 { get; set; }
+        public int LL { get; set; }
+        public int HP { get; set; }
+        public int HT { get; set; }
+        public string C1 { get; set; }
+        public string C2 { get; set; }
+        public string C3 { get; set; }
+        public int FT { get; set; }
     }
 
     public class SearchRacer
     {
-        public Broadcast broadcast { get; set; }
-        public bool driverChanges { get; set; }
-        public long lastLogin { get; set; }
-        public int maxUsers { get; set; }
-        public int trackId { get; set; }
-        public string sessionStatus { get; set; }
-        public int sessionTypeId { get; set; }
-        public PrivateSession privateSession { get; set; }
-        public int seriesId { get; set; }
-        public bool regOpen { get; set; }
-        public int catId { get; set; }
-        public int eventTypeId { get; set; }
-        public int spotterAccess { get; set; }
-        public long lastSeen { get; set; }
-        public int seasonId { get; set; }
-        public Helmet helmet { get; set; }
-        public int privateSessionId { get; set; }
-        public int custid { get; set; }
-        public string name { get; set; }
-        public bool trustedAsSpotter { get; set; }
-        public int startTime { get; set; }
-        public int userRole { get; set; }
-        public string subSessionStatus { get; set; }
+        public Broadcast Broadcast { get; set; }
+        public bool DriverChanges { get; set; }
+        public long LastLogin { get; set; }
+        public int MaxUsers { get; set; }
+        public int TrackId { get; set; }
+        public string SessionStatus { get; set; }
+        public int SessionTypeId { get; set; }
+        public PrivateSession PrivateSession { get; set; }
+        public int SeriesId { get; set; }
+        public bool RegOpen { get; set; }
+        public int CatId { get; set; }
+        public int EventTypeId { get; set; }
+        public int SpotterAccess { get; set; }
+        public long LastSeen { get; set; }
+        public int SeasonId { get; set; }
+        public Helmet Helmet { get; set; }
+        public int PrivateSessionId { get; set; }
+        public int CustId { get; set; }
+        public string Name { get; set; }
+        public bool TrustedAsSpotter { get; set; }
+        public int StartTime { get; set; }
+        public int UserRole { get; set; }
+        public string SubSessionStatus { get; set; }
     }
 
     public class DriverStatus
