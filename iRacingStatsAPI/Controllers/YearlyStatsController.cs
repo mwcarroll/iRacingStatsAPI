@@ -48,8 +48,8 @@ namespace iRacingStatsAPI.Controllers
 
             IEnumerable<Models.YearlyStats> yearlyStats = await _iracingHttpClient.PostRequestAndGetResponses<Models.YearlyStats>(string.Format(Constants.URLs.YEARLY_STATS, id), data);
 
-            if (year != null) yearlyStats = yearlyStats.Where(x => x.year.Equals(year.ToString()));
-            if (category != null) yearlyStats = yearlyStats.Where(x => x.category.AsString(EnumFormat.Description).Equals(HttpUtility.UrlDecode(category), StringComparison.InvariantCultureIgnoreCase));
+            if (year != null) yearlyStats = yearlyStats.Where(x => x.Year.Equals(year.ToString()));
+            if (category != null) yearlyStats = yearlyStats.Where(x => x.Category.AsString(EnumFormat.Description).Equals(HttpUtility.UrlDecode(category), StringComparison.InvariantCultureIgnoreCase));
 
             return yearlyStats;
         }
