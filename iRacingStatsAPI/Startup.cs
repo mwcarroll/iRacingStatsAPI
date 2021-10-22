@@ -25,7 +25,7 @@ namespace iRacingStatsAPI
             services.Configure<User>(Configuration.GetSection("iRacingStatsAPI:User"));
             services.AddHttpClient<IRacingHttpClient>()
                 .ConfigureHttpMessageHandlerBuilder(c => {
-                    new HttpClientHandler()
+                    HttpClientHandler _ = new()
                     {
                         UseCookies = false
                     };
