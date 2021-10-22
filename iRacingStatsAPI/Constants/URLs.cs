@@ -30,6 +30,8 @@
         public const string ACTIVEOP_COUNT = MEMBER_SITE + "/GetActiveOpenPracticeCount";
 
         // Driver profile endpoints
+        public const string DRIVER_STATUS = MEMBER_SITE + "/GetDriverStatus";
+        public const string MEMBER_DIVISION = MEMBER_SITE + "/GetMembersDivision";
         public const string STATS_CHART = MEMBER_STATS + "/GetChartData";
         public const string CAREER_STATS = MEMBER_STATS + "/GetCareerStats";
         public const string YEARLY_STATS = MEMBER_STATS + "/GetYearlyStats";

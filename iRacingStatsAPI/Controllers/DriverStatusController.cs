@@ -22,7 +22,7 @@ namespace iRacingStatsAPI.Controllers
         public async Task<Models.DriverStatus> DriverStatus(string search)
         {
 
-            return await _iracingHttpClient.PostRequestAndGetResponse<Models.DriverStatus>(string.Format(Constants.URLs.DRIVER_STATUS, string.Format("searchTerms={0}", HttpUtility.UrlEncode(search))), null);
+            return await _iracingHttpClient.PostRequestAndGetResponse<Models.DriverStatus>(string.Concat(Constants.URLs.DRIVER_STATUS, string.Format("?searchTerms={0}", HttpUtility.UrlEncode(search))), null);
         }
     }
 }
