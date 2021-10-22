@@ -41,7 +41,7 @@ namespace iRacingStatsAPI.HttpClients
 			};
 
 			FormUrlEncodedContent content = new(formData);
-			return await _httpClient.PostAsync(Constants.URLs.LOGIN2, content);
+			return await _httpClient.PostAsync(Constants.URLs.LOGIN, content);
 		}
 
 		public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, object> formData)

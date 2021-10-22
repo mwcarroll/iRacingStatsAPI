@@ -2,26 +2,50 @@
 {
     public class URLs
     {
-        public const string LOGIN = "https://members.iracing.com/membersite/login.jsp";
-        public const string LOGIN2 = "https://members.iracing.com/membersite/Login";
-        public const string HOME = "http://members.iracing.com/membersite/member/Home.do";
-        public const string CHART = "http://members.iracing.com/memberstats/member/GetChartData?custId={0}&catId={1}&chartType=1";
-        public const string DRIVER_COUNTS = "http://members.iracing.com/membersite/member/GetDriverCounts";
-        public const string CAREER_STATS = "http://members.iracing.com/memberstats/member/GetCareerStats?custid={0}";
-        public const string YEARLY_STATS = "http://members.iracing.com/memberstats/member/GetYearlyStats?custid={0}";
-        public const string CARS_DRIVEN = "http://members.iracing.com/memberstats/member/GetCarsDriven?custid={0}";
-        public const string PERSONAL_BEST = "http://members.iracing.com/memberstats/member/GetPersonalBests?carid={0}&custid={1}";
-        public const string DRIVER_STATUS = "http://members.iracing.com/membersite/member/GetDriverStatus?{0}";
-        public const string DRIVER_STATS = "http://members.iracing.com/memberstats/member/GetDriverStats";
-        public const string LAST_RACE_STATS = "http://members.iracing.com/memberstats/member/GetLastRacesStats?custid={0}";
-        public const string RESULTS_ARCHIVE = "http://members.iracing.com/memberstats/member/GetResults";
-        public const string SEASON_STANDINGS = "http://members.iracing.com/memberstats/member/GetSeasonStandings";
-        public const string SEASON_STANDINGS2 = "http://members.iracing.com/membersite/member/statsseries.jsp";
-        public const string HOSTED_RESULTS = "http://members.iracing.com/memberstats/member/GetPrivateSessionResults";
-        public const string SELECT_SERIES = "http://members.iracing.com/membersite/member/SelectSeries.do?&season={0}&view=undefined&nocache={1}";
-        public const string SESSION_TIMES = "http://members.iracing.com/membersite/member/GetSessionTimes";
-        public const string SERIES_RACE_RESULTS = "http://members.iracing.com/memberstats/member/GetSeriesRaceResults";
-        public const string GET_EVENT_RESULTS = "http://members.iracing.com/membersite/member/GetEventResultsAsCSV?subsessionid={0}&simsesnum={1}&includeSummary=1";
+        // base URLS for endpoints
+        public const string MEMBER_SITE = "https://members.iracing.com/membersite/member";
+        public const string MEMBER_STATS = "https://members.iracing.com/memberstats/member";
 
+        // iRacing service URLs
+        public const string LOGIN = "https://members.iracing.com/membersite/Login";
+        public const string LOGOUT = "https://members.iracing.com/membersite/Logout";
+
+        // Main endpoints
+        public const string DRIVER_STATS = MEMBER_STATS + "/GetDriverStats";
+        public const string SUBSESSION_RESULTS = MEMBER_SITE + "/GetSubsessionResults";
+        public const string CURRENT_SESASONS = MEMBER_SITE + "/GetSeasons";
+        public const string SEASON_STANDINGS = MEMBER_STATS + "/GetSeasonStandings";
+
+        // Recent historical endpoints
+        public const string LASTRACE_STATS = MEMBER_STATS + "/GetLastRacesStats";
+        public const string LAST_SERIES = MEMBER_STATS + "/GetLastSeries";
+        public const string RESULTS = MEMBER_STATS + "/GetResults";
+        public const string WORLD_RECORDS = MEMBER_STATS + "/GetWorldRecords";
+
+        // Upcoming session endpoints
+        public const string SESSION_TIMES = MEMBER_SITE + "/GetSessionTimes";
+        public const string NEXT_EVENT = MEMBER_SITE + "/GetNextEvent";
+        public const string TOTALREGISTERED = MEMBER_SITE + "/GetTotalSessionJoinedCountsBySeason";
+        public const string RACEGUIDE = MEMBER_SITE + "/GetRaceGuide";
+        public const string ACTIVEOP_COUNT = MEMBER_SITE + "/GetActiveOpenPracticeCount";
+
+        // Driver profile endpoints
+        public const string STATS_CHART = MEMBER_STATS + "/GetChartData";
+        public const string CAREER_STATS = MEMBER_STATS + "/GetCareerStats";
+        public const string YEARLY_STATS = MEMBER_STATS + "/GetYearlyStats";
+        public const string PERSONAL_BESTS = MEMBER_STATS + "/GetPersonalBests";
+
+        // Race specific endpoints
+        public const string LAPS_SINGLE = MEMBER_SITE + "/GetLaps";
+        public const string LAPS_ALL = MEMBER_SITE + "/GetLapChart";
+
+        // Utility endpoints
+        public const string MEM_SUBSESSID = MEMBER_SITE + "/GetSubsessionForMember";
+        public const string CARS_DRIVEN = MEMBER_STATS + "/GetCarsDriven";
+        public const string PRIVATE_RESULTS = MEMBER_STATS + "/GetPrivateSessionResults";
+        public const string CAR_CLASS = MEMBER_SITE + "/GetCarClassById";
+        public const string TICKER_SESSIONS = MEMBER_SITE + "/GetTickerSessions";
+        public const string SEASON_FOR_SESSION = MEMBER_SITE + "/GetSeasonForSession";
+        public const string ALL_SUBSESSIONS = MEMBER_SITE + "/GetAllSubsessions";
     }
 }
