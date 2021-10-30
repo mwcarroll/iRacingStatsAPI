@@ -4,16 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStatsAPI.Controllers.Stats
 {
     [Obsolete("Calling this endpoint externally appears to have been deprecated.")]
-    [Route("api/[controller]")]
+    [Route("api/stats/[controller]")]
     [ApiController]
-    public class DriverStatsController : ControllerBase
+    public class DriverController : ControllerBase
     {
         private readonly IRacingHttpClient _iracingHttpClient;
 
-        public DriverStatsController(IRacingHttpClient iracingHttpClient)
+        public DriverController(IRacingHttpClient iracingHttpClient)
         {
             _iracingHttpClient = iracingHttpClient;
         }
@@ -21,7 +21,7 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{search}")]
         public async Task<string> DriverStats(string search)
         {
-            Dictionary<string, object> data = new()
+            Dictionary<string, string> data = new()
             {
                 { "search", search }
             };

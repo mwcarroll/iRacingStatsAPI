@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStatsAPI.Controllers.Stats
 {
-    [Route("api/[controller]")]
+    [Route("api/stats/[controller]")]
     [ApiController]
-    public class CareerStatsController : ControllerBase
+    public class CareerController : ControllerBase
     {
         private readonly IRacingHttpClient _iracingHttpClient;
 
-        public CareerStatsController(IRacingHttpClient iracingHttpClient)
+        public CareerController(IRacingHttpClient iracingHttpClient)
         {
             _iracingHttpClient = iracingHttpClient;
         }
@@ -19,12 +19,12 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<IEnumerable<Models.CareerStats>> CareerStats(int id)
         {
-            Dictionary<string, object> data = new()
+            Dictionary<string, string> data = new()
             {
-                { "custid", id }
+                { "custid", id.ToString() }
             };
 
-            return await _iracingHttpClient.PostRequestAndGetResponses<Models.CareerStats>(string.Format(Constants.URLs.CAREER_STATS, id), data);
+            return await _iracingHttpClient.PostRequestAndGetResponses<Models.CareerStats>(Constants.URLs.CAREER_STATS, data);
         }
     }
 }

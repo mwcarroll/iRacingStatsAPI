@@ -7,15 +7,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStatsAPI.Controllers.Stats
 {
-    [Route("api/[controller]")]
+    [Route("api/stats/[controller]")]
     [ApiController]
-    public class YearlyStatsController : ControllerBase
+    public class YearlyController : ControllerBase
     {
         private readonly IRacingHttpClient _iracingHttpClient;
 
-        public YearlyStatsController(IRacingHttpClient iracingHttpClient)
+        public YearlyController(IRacingHttpClient iracingHttpClient)
         {
             _iracingHttpClient = iracingHttpClient;
         }
@@ -41,9 +41,9 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{id:int}/{year:int:maxlength(4)}/{category:regex(^(dirt )?((road)|(oval))$)}")]
         public async Task<IEnumerable<Models.YearlyStats>> YearlyStats(int id, int? year, string category)
         {
-            Dictionary<string, object> data = new()
+            Dictionary<string, string> data = new()
             {
-                { "custid", id }
+                { "custid", id.ToString() }
             };
 
             IEnumerable<Models.YearlyStats> yearlyStats = await _iracingHttpClient.PostRequestAndGetResponses<Models.YearlyStats>(string.Format(Constants.URLs.YEARLY_STATS, id), data);

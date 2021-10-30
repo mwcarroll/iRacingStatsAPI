@@ -19,10 +19,10 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{maxCount:int}/{includeEmpty:bool}")]
         public async Task<Models.iRacingModelData<Models.OpenPractice>> ActiveOpenPractice(int maxCount, bool includeEmpty)
         {
-            Dictionary<string, object> data = new()
+            Dictionary<string, string> data = new()
             {
-                { "maxcount", maxCount },
-                { "include_empty", includeEmpty }
+                { "maxcount", maxCount.ToString() },
+                { "include_empty", includeEmpty.ToString() }
             };
 
             return await _iracingHttpClient.PostRequestAndGetResponse<Models.iRacingModelData<Models.OpenPractice>>(Constants.URLs.ACTIVEOP_COUNT, data);

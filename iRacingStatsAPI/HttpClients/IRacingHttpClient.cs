@@ -1,4 +1,5 @@
 using iRacingStatsAPI.Options;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,6 +27,7 @@ namespace iRacingStatsAPI.HttpClients
 		{
 			_logger = logger;
 			_httpClient = httpClient;
+			_httpClient.BaseAddress = new Uri("https://members.iracing.com");
 			_memoryCache = memoryCache;
 			_user = options.Value;
 		}
@@ -44,7 +46,7 @@ namespace iRacingStatsAPI.HttpClients
 			return await _httpClient.PostAsync(Constants.URLs.LOGIN, content);
 		}
 
-		public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, object> formData)
+		public async Task<HttpResponseMessage> PostRequest(string url, Dictionary<string, string> formData)
 		{
 			var lastPostDateTime = DateTime.MinValue;
 			if (_memoryCache.TryGetValue("IRacingHttpClient::LastPostDateTime", out DateTime cache_last))
@@ -90,15 +92,12 @@ namespace iRacingStatsAPI.HttpClients
 				System.Threading.Thread.Sleep(Constants.Config.POST_DELAY);
 			}
 
-			StringContent content = (formData != null) ? new(JsonSerializer.Serialize(formData)) : null;
-
-			HttpRequestMessage request = new(HttpMethod.Post, url);
+			HttpRequestMessage request = new(HttpMethod.Get, new Uri(QueryHelpers.AddQueryString(url, formData)));
 			request.Headers.Add("Cookie", cookies);
-			request.Content = content;
 
 			HttpResponseMessage response = await _httpClient.SendAsync(request);
 
-			if (response.RequestMessage.RequestUri.AbsolutePath.Contains("login"))
+			if (response.RequestMessage.RequestUri.AbsolutePath.Contains("login") || response.RequestMessage.RequestUri.AbsolutePath.Contains("notauthed"))
 			{
 				_memoryCache.Set("IRacingHttpClient::IsLoggedIn", false);
 
@@ -110,7 +109,7 @@ namespace iRacingStatsAPI.HttpClients
 			return response;
 		}
 
-		public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, object> formData)
+		public async Task<IEnumerable<T>> PostRequestAndGetResponses<T>(string url, Dictionary<string, string> formData)
 		{
 			HttpResponseMessage response = await PostRequest(url, formData);
 			string jsonString = await response.Content.ReadAsStringAsync();
@@ -119,7 +118,7 @@ namespace iRacingStatsAPI.HttpClients
 			return serialized;
 		}
 
-		public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, object> formData)
+		public async Task<Type> PostRequestAndGetResponse<Type>(string url, Dictionary<string, string> formData)
 		{
 			HttpResponseMessage response = await PostRequest(url, formData);
 			string jsonString = await response.Content.ReadAsStringAsync();
@@ -128,7 +127,7 @@ namespace iRacingStatsAPI.HttpClients
 			return serialized;
 		}
 
-		public async Task<string> PostRequestAndGetResponse(string url, Dictionary<string, object> formData)
+		public async Task<string> PostRequestAndGetResponse(string url, Dictionary<string, string> formData)
 		{
 			HttpResponseMessage response = await PostRequest(url, formData);
 			string jsonString = await response.Content.ReadAsStringAsync();
