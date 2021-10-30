@@ -1,6 +1,5 @@
 ﻿using iRacingStatsAPI.HttpClients;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,7 +20,12 @@ namespace iRacingStatsAPI.Controllers
         [HttpGet("{search}")]
         public async Task<Models.DriverStatus> DriverStatus(string search)
         {
-            return await _iracingHttpClient.PostRequestAndGetResponse<Models.DriverStatus>(string.Concat(Constants.URLs.DRIVER_STATUS, string.Format("?searchTerms={0}", HttpUtility.UrlEncode(search))), null);
+            Dictionary<string, string> data = new()
+            {
+                { "searchTerms", search }
+            };
+
+            return await _iracingHttpClient.PostRequestAndGetResponse<Models.DriverStatus>(Constants.URLs.DRIVER_STATUS, data);
         }
     }
 }
