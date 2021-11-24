@@ -1,9 +1,11 @@
-﻿using iRacingStatsAPI.HttpClients;
+﻿using iRacingStats.Core.HttpClients;
+using iRacingStats.Core.Constants;
+using iRacingStats.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStats.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +27,7 @@ namespace iRacingStatsAPI.Controllers
                 { "custId", custId.ToString() }
             };
 
-            return await _iracingHttpClient.PostRequestAndGetResponse(Constants.URLs.SUBSESSION_RESULTS, data);
+            return await _iracingHttpClient.PostRequestAndGetResponse(URLs.SUBSESSION_RESULTS, data);
         }
     }
 }

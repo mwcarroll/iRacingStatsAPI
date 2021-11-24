@@ -1,10 +1,12 @@
-﻿using iRacingStatsAPI.HttpClients;
+﻿using iRacingStats.Core.HttpClients;
+using iRacingStats.Core.Constants;
+using iRacingStats.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStats.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,14 +20,14 @@ namespace iRacingStatsAPI.Controllers
         }
 
         [HttpGet("{search}")]
-        public async Task<Models.DriverStatus> DriverStatus(string search)
+        public async Task<DriverStatus> DriverStatus(string search)
         {
             Dictionary<string, string> data = new()
             {
                 { "searchTerms", search }
             };
 
-            return await _iracingHttpClient.PostRequestAndGetResponse<Models.DriverStatus>(Constants.URLs.DRIVER_STATUS, data);
+            return await _iracingHttpClient.PostRequestAndGetResponse<DriverStatus>(URLs.DRIVER_STATUS, data);
         }
     }
 }
