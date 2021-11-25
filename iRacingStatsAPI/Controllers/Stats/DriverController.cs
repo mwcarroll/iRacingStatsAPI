@@ -1,10 +1,12 @@
-﻿using iRacingStatsAPI.HttpClients;
+﻿using iRacingStats.Core.HttpClients;
+using iRacingStats.Core.Constants;
+using iRacingStats.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace iRacingStatsAPI.Controllers.Stats
+namespace iRacingStats.Api.Controllers.Stats
 {
     [Obsolete("Calling this endpoint externally appears to have been deprecated.")]
     [Route("api/stats/[controller]")]
@@ -26,7 +28,7 @@ namespace iRacingStatsAPI.Controllers.Stats
                 { "search", search }
             };
 
-            return await _iracingHttpClient.PostRequestAndGetResponse(Constants.URLs.DRIVER_STATS, data);
+            return await _iracingHttpClient.PostRequestAndGetResponse(URLs.DRIVER_STATS, data);
         }
     }
 }

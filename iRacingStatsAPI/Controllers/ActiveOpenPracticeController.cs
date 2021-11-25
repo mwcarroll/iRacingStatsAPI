@@ -1,9 +1,11 @@
-﻿using iRacingStatsAPI.HttpClients;
+﻿using iRacingStats.Core.HttpClients;
+using iRacingStats.Core.Constants;
+using iRacingStats.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace iRacingStatsAPI.Controllers
+namespace iRacingStats.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,7 +19,7 @@ namespace iRacingStatsAPI.Controllers
         }
 
         [HttpGet("{maxCount:int}/{includeEmpty:bool}")]
-        public async Task<Models.iRacingModelData<Models.OpenPractice>> ActiveOpenPractice(int maxCount, bool includeEmpty)
+        public async Task<iRacingModelData<OpenPractice>> ActiveOpenPractice(int maxCount, bool includeEmpty)
         {
             Dictionary<string, string> data = new()
             {
@@ -25,7 +27,7 @@ namespace iRacingStatsAPI.Controllers
                 { "include_empty", includeEmpty.ToString() }
             };
 
-            return await _iracingHttpClient.PostRequestAndGetResponse<Models.iRacingModelData<Models.OpenPractice>>(Constants.URLs.ACTIVEOP_COUNT, data);
+            return await _iracingHttpClient.PostRequestAndGetResponse<iRacingModelData<OpenPractice>>(URLs.ACTIVEOP_COUNT, data);
         }
     }
 }

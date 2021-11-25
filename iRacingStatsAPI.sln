@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingStatsAPI", "iRacingStatsAPI\iRacingStatsAPI.csproj", "{69651700-5FC7-4EFF-93E0-BA4888101F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRacingStats.Api", "iRacingStatsAPI\iRacingStats.Api.csproj", "{69651700-5FC7-4EFF-93E0-BA4888101F55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRacingStats.Core", "iRacingStats.Core\iRacingStats.Core.csproj", "{581A540A-6565-4934-AA6F-949A17DB8981}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{69651700-5FC7-4EFF-93E0-BA4888101F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69651700-5FC7-4EFF-93E0-BA4888101F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69651700-5FC7-4EFF-93E0-BA4888101F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581A540A-6565-4934-AA6F-949A17DB8981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581A540A-6565-4934-AA6F-949A17DB8981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581A540A-6565-4934-AA6F-949A17DB8981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581A540A-6565-4934-AA6F-949A17DB8981}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,13 @@
-using iRacingStatsAPI.HttpClients;
-using iRacingStatsAPI.Options;
+using iRacingStats.Core.Extensions;
+using iRacingStats.Core.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Net.Http;
 
-namespace iRacingStatsAPI
+namespace iRacingStats.Api
 {
     public class Startup
     {
@@ -23,17 +21,7 @@ namespace iRacingStatsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<User>(Configuration.GetSection("iRacingStatsAPI:User"));
-            services.AddHttpClient<IRacingHttpClient>()
-                .ConfigureHttpMessageHandlerBuilder(c => {
-                    HttpClientHandler _ = new()
-                    {
-                        AllowAutoRedirect = true,
-                        UseCookies = true,
-                        CookieContainer = new CookieContainer()
-                        //UseCookies = false
-                    };
-                });
+            services.AddiRacingStatsCore(Configuration);
             services.AddMemoryCache();
             services.AddControllers();
 
