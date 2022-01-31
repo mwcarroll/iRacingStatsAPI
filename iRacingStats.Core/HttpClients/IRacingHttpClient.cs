@@ -89,7 +89,7 @@ namespace iRacingStats.Core.HttpClients
 			}
 
 			HttpRequestMessage request = new(HttpMethod.Get, new Uri(QueryHelpers.AddQueryString(url, formData)));
-			request.Headers.Add("Cookie", cookies);
+			//request.Headers.Add("Cookie", cookies);
 
 			HttpResponseMessage response = await _httpClient.SendAsync(request);
 

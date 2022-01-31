@@ -49,5 +49,12 @@
         public const string TICKER_SESSIONS = MEMBER_SITE + "/GetTickerSessions";
         public const string SEASON_FOR_SESSION = MEMBER_SITE + "/GetSeasonForSession";
         public const string ALL_SUBSESSIONS = MEMBER_SITE + "/GetAllSubsessions";
+
+        // League endpoints
+        public const string LEAGUE_DIRECTORY = MEMBER_SITE + "/GetLeagueDirectory";
+        public const string LEAGUE_SESSIONS = MEMBER_SITE + "/GetLeagueSessions";
+        public const string LEAGUE_SEASON_SESSIONS = MEMBER_SITE + "/GetLeagueCalendarBySeason"; //leagueID, leagueSeasonID
+        public const string LEAGUE_SEASONS = MEMBER_SITE + "/GetLeagueSeasons"; //leagueID
+
     }
 }
