@@ -11,14 +11,12 @@ namespace iRacingStats.Core.Extensions
 
             services.Configure<User>(configuration.GetSection("iRacingStats.Core:User"));
             services.AddHttpClient<IRacingHttpClient>()
-                .ConfigureHttpMessageHandlerBuilder(c => {
-                    HttpClientHandler _ = new()
+                .ConfigureHttpMessageHandlerBuilder(c => new HttpClientHandler()
                     {
                         AllowAutoRedirect = true,
                         UseCookies = true,
                         CookieContainer = new CookieContainer()
-                    };
-                });
+                    });
             return services;
         }
     }
